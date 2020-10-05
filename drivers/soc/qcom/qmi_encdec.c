@@ -323,7 +323,7 @@ static int qmi_encode(struct qmi_elem_info *ei_array, void *out_buf,
 			data_len_value = temp_ei->elem_len;
 		} else if (data_len_value <= 0 ||
 			    temp_ei->elem_len < data_len_value) {
-			pr_err("%s: Invalid data length\n", __func__);
+			pr_err("%s: Invalid data length: %d\n", __func__, data_len_value);
 			return -EINVAL;
 		}
 
@@ -339,6 +339,7 @@ static int qmi_encode(struct qmi_elem_info *ei_array, void *out_buf,
 
 		case QMI_DATA_LEN:
 			memcpy(&data_len_value, buf_src, temp_ei->elem_size);
+			pr_err("offset: %d, data len value: %d\n", temp_ei->offset, data_len_value);
 			data_len_sz = temp_ei->elem_size == sizeof(u8) ?
 					sizeof(u8) : sizeof(u16);
 			/* Check to avoid out of range buffer access */

@@ -14,7 +14,7 @@
 #ifndef HEAP_MEM_EXT_SERVICE_01_H
 #define HEAP_MEM_EXT_SERVICE_01_H
 
-#include <soc/qcom/msm_qmi_interface.h>
+#include <linux/soc/qcom/qmi.h>
 
 #define MEM_ALLOC_REQ_MAX_MSG_LEN_V01 255
 #define MEM_FREE_REQ_MAX_MSG_LEN_V01 255
@@ -112,7 +112,7 @@ struct mem_alloc_resp_msg_v01 {
 	/*  Result Code */
 	/* The result of the requested memory operation
 	*/
-	enum qmi_result_type_v01 resp;
+	uint16_t resp;
 	/* Optional */
 	/*  Memory Block Handle
 	*/
@@ -156,7 +156,7 @@ struct mem_free_resp_msg_v01 {
 	/* Result of the requested memory operation, todo,
 	 * need to check the async operation for free
 	 */
-	enum qmi_result_type_v01 resp;
+	uint16_t resp;
 };  /* Message */
 
 /* Request Message; This command is used for getting
@@ -296,14 +296,14 @@ struct mem_free_generic_resp_msg_v01 {
 
 };  /* Message */
 
-extern struct elem_info mem_alloc_req_msg_data_v01_ei[];
-extern struct elem_info mem_alloc_resp_msg_data_v01_ei[];
-extern struct elem_info mem_free_req_msg_data_v01_ei[];
-extern struct elem_info mem_free_resp_msg_data_v01_ei[];
-extern struct elem_info mem_alloc_generic_req_msg_data_v01_ei[];
-extern struct elem_info mem_alloc_generic_resp_msg_data_v01_ei[];
-extern struct elem_info mem_free_generic_req_msg_data_v01_ei[];
-extern struct elem_info mem_free_generic_resp_msg_data_v01_ei[];
+extern struct qmi_elem_info mem_alloc_req_msg_data_v01_ei[];
+extern struct qmi_elem_info mem_alloc_resp_msg_data_v01_ei[];
+extern struct qmi_elem_info mem_free_req_msg_data_v01_ei[];
+extern struct qmi_elem_info mem_free_resp_msg_data_v01_ei[];
+extern struct qmi_elem_info mem_alloc_generic_req_msg_data_v01_ei[];
+extern struct qmi_elem_info mem_alloc_generic_resp_msg_data_v01_ei[];
+extern struct qmi_elem_info mem_free_generic_req_msg_data_v01_ei[];
+extern struct qmi_elem_info mem_free_generic_resp_msg_data_v01_ei[];
 
 /*Service Message Definition*/
 #define MEM_ALLOC_REQ_MSG_V01 0x0020
