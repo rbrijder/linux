@@ -451,11 +451,17 @@ static const struct net_device_ops bam_dmux_ops = {
 	.ndo_start_xmit	= bam_dmux_netdev_start_xmit,
 };
 
+static const struct device_type wwan_type = {
+	.name = "wwan",
+};
+
 static void bam_dmux_netdev_setup(struct net_device *dev)
 {
 	dev->netdev_ops = &bam_dmux_ops;
 
 	dev->type = ARPHRD_RAWIP;
+	SET_NETDEV_DEVTYPE(dev, &wwan_type);
+
 	dev->mtu = BAM_DMUX_DEFAULT_MTU;
 	dev->max_mtu = BAM_DMUX_MAX_DATA_SIZE;
 	dev->needed_headroom = sizeof(struct bam_dmux_hdr);
@@ -489,6 +495,7 @@ static void bam_dmux_register_netdev_work(struct work_struct *work)
 		if (!netdev)
 			return; /* -ENOMEM */
 
+		SET_NETDEV_DEV(netdev, dmux->dev);
 		bndev = netdev_priv(netdev);
 		bndev->dmux = dmux;
 		bndev->ch = ch;
