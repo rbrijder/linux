@@ -496,6 +496,8 @@ static void bam_dmux_register_netdev_work(struct work_struct *work)
 			return; /* -ENOMEM */
 
 		SET_NETDEV_DEV(netdev, dmux->dev);
+		netdev->dev_port = ch;
+
 		bndev = netdev_priv(netdev);
 		bndev->dmux = dmux;
 		bndev->ch = ch;
