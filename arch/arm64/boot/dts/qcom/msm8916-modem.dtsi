@@ -15,8 +15,20 @@
 	status = "okay";
 };
 
+&gps_mem {
+	status = "okay";
+};
+
 &lpass {
 	status = "disabled";
+};
+
+&memshare {
+	status = "okay";
+};
+
+&memshare_gps {
+	memory-region = <&gps_mem>;
 };
 
 &mpss {
