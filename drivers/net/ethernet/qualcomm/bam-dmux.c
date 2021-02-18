@@ -8,7 +8,6 @@
 #include <linux/bitops.h>
 #include <linux/dma-mapping.h>
 #include <linux/dmaengine.h>
-#include <linux/etherdevice.h>
 #include <linux/if_arp.h>
 #include <linux/interrupt.h>
 #include <linux/module.h>
@@ -24,7 +23,6 @@
 
 #define BAM_DMUX_BUFFER_SIZE		SZ_2K
 #define BAM_DMUX_MAX_DATA_SIZE		(BAM_DMUX_BUFFER_SIZE - sizeof(struct bam_dmux_hdr))
-#define BAM_DMUX_DEFAULT_MTU		2000
 #define BAM_DMUX_NUM_SKB		32
 
 #define BAM_DMUX_AUTOSUSPEND_DELAY	1000
@@ -446,16 +444,15 @@ static void bam_dmux_netdev_setup(struct net_device *dev)
 	dev->type = ARPHRD_RAWIP;
 	SET_NETDEV_DEVTYPE(dev, &wwan_type);
 
-	dev->mtu = BAM_DMUX_DEFAULT_MTU;
+	dev->mtu = ETH_DATA_LEN;
 	dev->max_mtu = BAM_DMUX_MAX_DATA_SIZE;
 	dev->needed_headroom = sizeof(struct bam_dmux_hdr);
 	dev->needed_tailroom = sizeof(u32); /* word-aligned */
+	dev->tx_queue_len = DEFAULT_TX_QUEUE_LEN;
 
 	/* This perm addr will be used as interface identifier by IPv6 */
 	dev->addr_assign_type = NET_ADDR_RANDOM;
 	eth_random_addr(dev->perm_addr);
-
-	dev->tx_queue_len = DEFAULT_TX_QUEUE_LEN;
 }
 
 static void bam_dmux_register_netdev_work(struct work_struct *work)
