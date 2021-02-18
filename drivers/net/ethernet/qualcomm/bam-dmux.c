@@ -443,6 +443,7 @@ static void bam_dmux_netdev_setup(struct net_device *dev)
 
 	dev->type = ARPHRD_RAWIP;
 	SET_NETDEV_DEVTYPE(dev, &wwan_type);
+	dev->flags = IFF_POINTOPOINT | IFF_NOARP;
 
 	dev->mtu = ETH_DATA_LEN;
 	dev->max_mtu = BAM_DMUX_MAX_DATA_SIZE;
