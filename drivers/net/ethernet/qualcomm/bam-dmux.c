@@ -90,7 +90,6 @@ struct bam_dmux {
 struct bam_dmux_netdev {
 	struct bam_dmux *dmux;
 	u8 ch;
-	bool open;
 };
 
 static void bam_dmux_pc_vote(struct bam_dmux *dmux, bool enable)
@@ -289,37 +288,22 @@ err:
 static int bam_dmux_netdev_open(struct net_device *netdev)
 {
 	struct bam_dmux_netdev *bndev = netdev_priv(netdev);
-	struct bam_dmux *dmux = bndev->dmux;
 	int ret;
 
-	/* Need to resume before starting the queue */
-	ret = pm_runtime_get_sync(dmux->dev);
-	if (ret < 0) {
-		pm_runtime_put_noidle(dmux->dev);
+	ret = bam_dmux_send_cmd(bndev, BAM_DMUX_HDR_CMD_OPEN);
+	if (ret)
 		return ret;
-	}
-
-	if (!bndev->open) {
-		ret = bam_dmux_send_cmd(bndev, BAM_DMUX_HDR_CMD_OPEN);
-		if (ret)
-			goto err;
-
-		bndev->open = true;
-	} else {
-		ret = 0;
-	}
 
 	netif_start_queue(netdev);
-
-err:
-	pm_runtime_mark_last_busy(dmux->dev);
-	pm_runtime_put_autosuspend(dmux->dev);
-	return ret;
+	return 0;
 }
 
 static int bam_dmux_netdev_stop(struct net_device *netdev)
 {
+	struct bam_dmux_netdev *bndev = netdev_priv(netdev);
+
 	netif_stop_queue(netdev);
+	bam_dmux_send_cmd(bndev, BAM_DMUX_HDR_CMD_CLOSE);
 	return 0;
 }
 
