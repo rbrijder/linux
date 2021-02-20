@@ -573,7 +573,7 @@ static bool bam_dmux_cmd_data(struct bam_dmux_skb_dma *skb_dma)
 		break;
 	}
 
-	netif_rx_ni(skb);
+	netif_receive_skb(skb);
 
 	if (bam_dmux_skb_dma_queue_rx(skb_dma, GFP_ATOMIC))
 		dma_async_issue_pending(dmux->rx);
