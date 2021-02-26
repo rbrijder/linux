@@ -177,6 +177,7 @@
 		compatible = "nxp,tfa9895";
 		reg = <0x34>;
 		#sound-dai-cells = <0>;
+		sound-name-prefix = "Speaker";
 	};
 };
 
