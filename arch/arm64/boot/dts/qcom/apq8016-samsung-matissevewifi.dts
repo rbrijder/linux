@@ -98,7 +98,6 @@
 
 		gpio = <&msmgpio 73 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
-		regulator-always-on; /* FIXME */
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&tsp_en_default>;
@@ -112,7 +111,6 @@
 
 		gpio = <&msmgpio 98 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
-		regulator-always-on; /* FIXME */
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&tsp_en1_default>;
@@ -164,7 +162,10 @@
 		interrupt-parent = <&msmgpio>;
 		interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
 
-		reset-gpios = <&msmgpio 114 GPIO_ACTIVE_HIGH>;
+		vdd-supply = <&reg_tsp_1p8v>;
+		vdda-supply = <&reg_tsp_3p3v>;
+
+		reset-gpios = <&msmgpio 114 GPIO_ACTIVE_LOW>;
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&tsp_int_rst_default>;
