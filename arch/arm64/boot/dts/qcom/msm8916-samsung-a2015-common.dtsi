@@ -176,8 +176,9 @@
 	speaker_codec: audio-codec@34 {
 		compatible = "nxp,tfa9895";
 		reg = <0x34>;
-		#sound-dai-cells = <0>;
+		vddd-supply = <&pm8916_l5>;
 		sound-name-prefix = "Speaker";
+		#sound-dai-cells = <0>;
 	};
 };
 
